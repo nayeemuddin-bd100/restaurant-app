@@ -11,7 +11,7 @@ const SingleProductPage = () => {
 					<Image
 						src={singleProduct.img}
 						alt=""
-						className="object-contain"
+						className="object-contain w-10"
 						fill
 					/>
 				</div>
