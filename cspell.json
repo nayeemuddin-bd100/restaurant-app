@@ -1,0 +1,9 @@
+{
+	"version": "0.2",
+	"ignorePaths": ["./rnd.ts"],
+	"dictionaryDefinitions": [],
+	"dictionaries": [],
+	"words": [],
+	"ignoreWords": [],
+	"import": []
+}
