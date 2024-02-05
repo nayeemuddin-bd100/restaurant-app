@@ -17,3 +17,22 @@ export type ProductType = {
 		additionalPrice: number;
 	}[];
 }[];
+
+export type OrderType = {
+	id: string;
+	price: number;
+	products: CartItemType[];
+	status: string;
+	intent_id?: string;
+	userEmail: string;
+	createdAt: Date;
+};
+
+export type CartItemType = {
+	id: string;
+	title: string;
+	img?: string;
+	price: number;
+	optionTitle?: string;
+	quantity: number;
+};
