@@ -1,8 +1,21 @@
+"use client";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const LoginPage = () => {
+	const { status } = useSession();
+	const router = useRouter();
+
+	if (status === "loading") {
+		return <p>Loading ...</p>;
+	}
+
+	if (status === "authenticated") {
+		router.push("/");
+	}
 	return (
 		<div className="p-4 flex items-center justify-center h-screen">
 			{/* BOX */}
@@ -19,7 +32,10 @@ const LoginPage = () => {
 						Welcome
 					</h1>
 					<p>Log into your account or create a new one using social buttons</p>
-					<button className="flex gap-4 p-4 ring-1 ring-blue-200 rounded-md hover:bg-red-400 hover:text-white duration-300 ">
+					<button
+						className="flex gap-4 p-4 ring-1 ring-blue-200 rounded-md hover:bg-red-400 hover:text-white duration-300 "
+						onClick={() => signIn("google")}
+					>
 						<Image
 							src="/google.png"
 							alt=""
@@ -29,15 +45,18 @@ const LoginPage = () => {
 						/>
 						<span>Sign in with Google</span>
 					</button>
-					<button className="flex gap-4 p-4 ring-1 ring-blue-200 rounded-md hover:bg-red-400 hover:text-white duration-300">
+					<button
+						className="flex gap-4 p-4 ring-1 ring-blue-200 rounded-md hover:bg-red-400 hover:text-white duration-300"
+						onClick={() => signIn("github")}
+					>
 						<Image
-							src="/facebook.png"
+							src="/github-logo.png"
 							alt=""
 							width={20}
 							height={20}
 							className="object-contain"
 						/>
-						<span>Sign in with Facebook</span>
+						<span>Sign in with Github</span>
 					</button>
 					<p className="text-sm">
 						Have a problem?
