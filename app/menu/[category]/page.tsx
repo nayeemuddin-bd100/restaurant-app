@@ -1,12 +1,19 @@
 import { pizzas } from "@/app/data";
 import Image from "next/image";
 import Link from "next/link";
-import p7 from "@/public/temporary/p7.png";
+import getProducts from "../../lib/getProducts";
+import { ProductType } from "@/app/types/types";
 
-const CategoryPage = () => {
+interface CategoryProps {
+	params: { category: string };
+}
+const CategoryPage = async ({ params }: CategoryProps) => {
+	const category = params?.category;
+	const products: ProductType = await getProducts(category);
+
 	return (
 		<div className="flex flex-row flex-wrap  text-red-500">
-			{pizzas.map((item) => (
+			{products.map((item) => (
 				<Link
 					href={`/product/${item.id}`}
 					key={item.id}
