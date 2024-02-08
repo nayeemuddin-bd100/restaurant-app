@@ -2,32 +2,48 @@
 
 import React from "react";
 import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { OrderType } from "../types/types";
 import ListSkelton from "../components/Skelton/ListSkelton";
 import Image from "next/image";
+import getOrders from "../lib/getOrders";
+import updateOrders from "../lib/updateOrder";
 
 const OrdersPage = () => {
 	const { data: session, status } = useSession();
 	const router = useRouter();
+	const queryClient = useQueryClient();
+
 	if (status === "unauthenticated") {
 		router.push("/");
 	}
 
 	const { isLoading, error, data } = useQuery({
 		queryKey: ["orders"],
-		queryFn: () =>
-			fetch("http://localhost:3000/api/orders").then((res) => res.json()),
+		queryFn: getOrders,
+	});
+
+	const updateStatusMutation = useMutation({
+		mutationFn: ({ id, status }: { id: string; status: string }) =>
+			updateOrders({ id, status }),
+
+		onSuccess() {
+			queryClient.invalidateQueries({ queryKey: ["orders"] });
+		},
 	});
 
 	const handleUpdate = (e: React.FormEvent<HTMLFormElement>, id: string) => {
 		e.preventDefault();
 
-		console.log(id);
-	};
+		const form = e.target as HTMLFormElement;
+		const input = form.elements[0] as HTMLInputElement;
+		const status = input.value;
 
-	if (isLoading || status === "loading") return <ListSkelton />;
+		updateStatusMutation.mutate({ id, status });
+	};
+	if (isLoading || status === "loading" || updateStatusMutation.isPending)
+		return <ListSkelton />;
 
 	return (
 		<div className="p-4 lg:px-20 xl:px-40">
@@ -63,7 +79,10 @@ const OrdersPage = () => {
 												placeholder={item.status}
 												className="p-2 ring-1 ring-red-100 rounded-md"
 											/>
-											<button className="bg-red-400 p-2 rounded-full">
+											<button
+												className="bg-red-400 p-2 rounded-full"
+												type="submit"
+											>
 												<Image src="/edit.png" alt="" width={20} height={20} />
 											</button>
 										</form>
