@@ -8,7 +8,7 @@ interface CategoryProps {
 }
 const CategoryPage = async ({ params }: CategoryProps) => {
 	const category = params?.category;
-	const products: ProductType = await getProducts(category);
+	const products: ProductType[] = await getProducts(category);
 
 	return (
 		<div className="flex flex-row flex-wrap  text-red-500">

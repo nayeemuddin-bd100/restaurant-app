@@ -16,7 +16,7 @@ export type ProductType = {
 		title: string;
 		additionalPrice: number;
 	}[];
-}[];
+};
 
 export type OrderType = {
 	id: string;

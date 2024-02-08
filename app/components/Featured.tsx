@@ -4,7 +4,7 @@ import { ProductType } from "../types/types";
 // import { featuredProducts } from "../data";
 
 const Featured = async () => {
-	const featuredProducts: ProductType = await getProducts();
+	const featuredProducts: ProductType[] = await getProducts();
 	return (
 		<div className="w-screen overflow-x-scroll text-red-500">
 			{/* WRAPPER */}
