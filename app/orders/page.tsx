@@ -9,6 +9,7 @@ import ListSkelton from "../components/Skelton/ListSkelton";
 import Image from "next/image";
 import getOrders from "../lib/getOrders";
 import updateOrders from "../lib/updateOrder";
+import toast from "react-hot-toast";
 
 const OrdersPage = () => {
 	const { data: session, status } = useSession();
@@ -41,6 +42,7 @@ const OrdersPage = () => {
 		const status = input.value;
 
 		updateStatusMutation.mutate({ id, status });
+		toast.success("Status updated successfully");
 	};
 	if (isLoading || status === "loading" || updateStatusMutation.isPending)
 		return <ListSkelton />;
