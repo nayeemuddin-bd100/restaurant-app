@@ -10,6 +10,14 @@ const CategoryPage = async ({ params }: CategoryProps) => {
 	const category = params?.category;
 	const products: ProductType[] = await getProducts(category);
 
+	if (products.length === 0) {
+		return (
+			<h2 className="text-3xl text-red-400 w-screen mt-10 font-semibold text-center mx-auto">
+				Product Not Found
+			</h2>
+		);
+	}
+
 	return (
 		<div className="flex flex-row flex-wrap  text-red-500">
 			{products.map((item) => (
