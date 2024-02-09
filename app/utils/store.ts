@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { ActionType, CartType } from "../types/types";
+import { persist } from "zustand/middleware";
 
 const INITIAL_STATE = {
 	products: [],
@@ -7,24 +8,57 @@ const INITIAL_STATE = {
 	totalPrice: 0,
 };
 
-export const useCartStore = create<CartType & ActionType>((set, get) => ({
-	products: INITIAL_STATE.products,
-	totalItems: INITIAL_STATE.totalItems,
-	totalPrice: INITIAL_STATE.totalPrice,
+export const useCartStore = create(
+	persist<CartType & ActionType>(
+		(set, get) => ({
+			products: INITIAL_STATE.products,
+			totalItems: INITIAL_STATE.totalItems,
+			totalPrice: INITIAL_STATE.totalPrice,
 
-	addToCart: (item) => {
-		set((state) => ({
-			products: [...state.products, item],
-			totalItems: state.totalItems + item.quantity,
-			totalPrice: state.totalPrice + item.price,
-		}));
-	},
+			addToCart: (item) => {
+				// if product exists in cart, then update quantity and price only
+				const products = get().products;
+				const productInState = products.find(
+					(product) => product.id === item.id
+				);
 
-	removeFromCart: (item) => {
-		set((state) => ({
-			products: state.products.filter((product) => product.id !== item.id),
-			totalItems: state.totalItems - item.quantity,
-			totalPrice: state.totalPrice - item.price,
-		}));
-	},
-}));
+				if (productInState) {
+					const updatedProducts = products.map((product) =>
+						product.id === item.id
+							? {
+									...product,
+									quantity: item.quantity + product.quantity,
+									price: item.price + product.price,
+							  }
+							: product
+					);
+
+					set((state) => ({
+						products: updatedProducts,
+						totalItems: state.totalItems + item.quantity,
+						totalPrice: state.totalPrice + item.price,
+					}));
+				} else {
+					set((state) => ({
+						products: [...state.products, item],
+						totalItems: state.totalItems + item.quantity,
+						totalPrice: state.totalPrice + item.price,
+					}));
+				}
+			},
+
+			removeFromCart: (item) => {
+				set((state) => {
+					return {
+						products: state.products.filter(
+							(product) => product.id !== item.id
+						),
+						totalItems: state.totalItems - item.quantity,
+						totalPrice: state.totalPrice - item.price,
+					};
+				});
+			},
+		}),
+		{ name: "cart", skipHydration: true }
+	)
+);
