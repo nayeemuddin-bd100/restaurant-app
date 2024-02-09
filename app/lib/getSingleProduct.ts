@@ -1,7 +1,7 @@
 const getSingleProducts = async (id: string) => {
 	try {
 		const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-			cache: "force-cache",
+			cache: "no-cache",
 		});
 
 		if (!res.ok) {

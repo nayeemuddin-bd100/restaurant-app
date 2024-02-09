@@ -6,6 +6,7 @@ const getProducts = async (category?: string) => {
 			}`,
 			{
 				cache: "force-cache",
+				next: { revalidate: 5 },
 			}
 		);
 
