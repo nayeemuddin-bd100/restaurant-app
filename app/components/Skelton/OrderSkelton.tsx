@@ -1,4 +1,4 @@
-const ListSkelton = () => {
+const OrderSkelton = () => {
 	return (
 		<div className="p-4 lg:px-20 xl:px-40">
 			<table className="w-full border-separate border-spacing-3">
@@ -47,4 +47,4 @@ const ListSkelton = () => {
 	);
 };
 
-export default ListSkelton;
+export default OrderSkelton;
