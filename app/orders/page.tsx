@@ -5,11 +5,11 @@ import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { OrderType } from "../types/types";
-import ListSkelton from "../components/Skelton/ListSkelton";
 import Image from "next/image";
 import getOrders from "../lib/getOrders";
 import updateOrders from "../lib/updateOrder";
 import toast from "react-hot-toast";
+import OrderSkelton from "../components/Skelton/OrderSkelton";
 
 const OrdersPage = () => {
 	const { data: session, status } = useSession();
@@ -45,7 +45,7 @@ const OrdersPage = () => {
 		toast.success("Status updated successfully");
 	};
 	if (isLoading || status === "loading" || updateStatusMutation.isPending)
-		return <ListSkelton />;
+		return <OrderSkelton />;
 
 	return (
 		<div className="p-4 lg:px-20 xl:px-40">
