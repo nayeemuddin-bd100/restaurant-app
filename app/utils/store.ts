@@ -48,16 +48,14 @@ export const useCartStore = create(
 			},
 
 			removeFromCart: (item) => {
-				set((state) => {
-					return {
-						products: state.products.filter(
-							(product) => product.id !== item.id
-						),
-						totalItems: state.totalItems - item.quantity,
-						totalPrice: state.totalPrice - item.price,
-					};
-				});
+				set((state) => ({
+					products: state.products.filter((product) => product.id !== item.id),
+					totalItems: state.totalItems - item.quantity,
+					totalPrice: state.totalPrice - item.price,
+				}));
 			},
+
+			resetCart: () => set(INITIAL_STATE),
 		}),
 		{ name: "cart", skipHydration: true }
 	)
