@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -62,7 +62,22 @@ const OrdersPage = () => {
 					</thead>
 					<tbody>
 						{data.map((item: OrderType) => (
-							<tr className="bg-red-100" key={item.id}>
+							<tr
+								className={
+									item?.status === "Preparing"
+										? `bg-blue-100`
+										: item?.status === "Ready for Pickup"
+										? `bg-green-100`
+										: item?.status === "On the Way"
+										? `bg-yellow-100`
+										: item?.status === "Delivered"
+										? `bg-green-200`
+										: item?.status === "Cancelled"
+										? `bg-red-300`
+										: `bg-red-100`
+								}
+								key={item.id}
+							>
 								<td className="hidden md:block py-6 px-1">{item.id}</td>
 								<td className="py-6 px-1">
 									{item.createdAt.toString().slice(0, 10)}
@@ -77,10 +92,26 @@ const OrdersPage = () => {
 											className="flex items-center justify-center gap-4"
 											onSubmit={(e) => handleUpdate(e, item.id)}
 										>
-											<input
-												placeholder={item.status}
-												className="p-2 ring-1 ring-red-100 rounded-md"
-											/>
+											<select
+												id="select_order"
+												className="block w-full p-2 ring-1 ring-red-100 rounded-md relative"
+											>
+												<option selected={item.status === "Preparing"}>
+													Preparing
+												</option>
+												<option selected={item.status === "Ready for Pickup"}>
+													Ready for Pickup
+												</option>
+												<option selected={item.status === "On the Way"}>
+													On the Way
+												</option>
+												<option selected={item.status === "Delivered"}>
+													Delivered
+												</option>
+												<option selected={item.status === "Cancelled"}>
+													Cancelled
+												</option>
+											</select>
 											<button
 												className="bg-red-400 p-2 rounded-full"
 												type="submit"
