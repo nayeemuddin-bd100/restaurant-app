@@ -161,7 +161,7 @@ const AddPage = () => {
 				{/* Upload Image */}
 				<div className="w-full  flex flex0col gap-2 ring-1 ring-red-200 p-4">
 					<CldUploadButton
-						options={{ multiple: false }}
+						options={{ folder: "restaurant-app", multiple: false }}
 						uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
 						onSuccess={handleSuccess}
 						className="text-sm cursor-pointer flex gap-4 items-center"
