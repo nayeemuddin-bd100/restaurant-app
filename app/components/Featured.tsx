@@ -1,10 +1,14 @@
 import Image from "next/image";
 import getProducts from "../lib/getProducts";
 import { ProductType } from "../types/types";
-// import { featuredProducts } from "../data";
 
-const Featured = async () => {
-	const featuredProducts: ProductType[] = await getProducts();
+interface FeaturedProps {
+	params?: { isFeatured: string };
+}
+const Featured = async ({ params }: FeaturedProps) => {
+	const featuredProducts: ProductType[] = await getProducts(
+		params || { isFeatured: "true" }
+	);
 	return (
 		<div className="w-screen overflow-x-scroll text-red-500">
 			{/* WRAPPER */}

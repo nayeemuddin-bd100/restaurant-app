@@ -4,13 +4,20 @@ import prisma from "@/app/utils/prismadb";
 export const GET = async (req: NextRequest) => {
 	const { searchParams } = req.nextUrl;
 	const category = searchParams.get("category");
+	const isFeatured = searchParams.get("isFeatured");
 
 	try {
 		const products = await prisma?.product.findMany({
 			where: {
-				...(category ? { catSlug: category } : { isFeatured: true }),
+				...(category
+					? { catSlug: category }
+					: isFeatured === "true"
+					? { isFeatured: true }
+					: {}),
 			},
 		});
+
+		// console.log(products);
 
 		return new NextResponse(JSON.stringify(products), { status: 200 });
 	} catch (error) {
