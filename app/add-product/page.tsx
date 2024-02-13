@@ -3,23 +3,33 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddProductSkelton from "../components/Skelton/AddProductSkelton";
 import { CldUploadButton } from "next-cloudinary";
 import toast from "react-hot-toast";
+import getCategories from "../lib/getCategories";
 
-type Inputs = {
+interface Inputs {
 	title: string;
 	desc: string;
 	price: number;
 	catSlug: string;
 	img: string;
-};
+}
 
-type Option = {
+interface Option {
 	title: string;
 	additionalPrice: number;
-};
+}
+
+interface Category {
+	id: string;
+	title: string;
+	desc: string;
+	color: string;
+	img?: string;
+	slug: string;
+}
 
 const AddPage = () => {
 	const { data: session, status } = useSession();
@@ -38,8 +48,17 @@ const AddPage = () => {
 
 	const [options, setOptions] = useState<Option[]>([]);
 	const [loading, setLoading] = useState(false);
-
+	const [categories, setCategories] = useState<Category[]>([]);
 	const router = useRouter();
+
+	useEffect(() => {
+		async function fetchData() {
+			const data = await getCategories();
+
+			setCategories(data);
+		}
+		fetchData();
+	}, []);
 
 	if (status === "loading") {
 		return <AddProductSkelton />;
@@ -61,7 +80,9 @@ const AddPage = () => {
 			return { ...prev, [e.target.name]: value };
 		});
 	};
-	const changeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+	// Handle Option
+	const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOption((prev) => {
 			const value =
 				e.target.type === "number"
@@ -70,6 +91,36 @@ const AddPage = () => {
 
 			return { ...prev, [e.target.name]: value };
 		});
+	};
+
+	const handleSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setOption({ ...option, title: e.target.value });
+	};
+
+	const handleOptionClick = () => {
+		const existingOptionIndex = options.findIndex(
+			(opt) => opt.title === option.title
+		);
+
+		if (existingOptionIndex !== -1) {
+			setOptions((prev) => [
+				...prev.slice(0, existingOptionIndex),
+				option,
+				...prev.slice(existingOptionIndex + 1),
+			]);
+		} else {
+			setOptions((prev) => [...prev, option]);
+		}
+
+		setOption({
+			title: "",
+			additionalPrice: 0,
+		});
+	};
+
+	// Handle Select category
+	const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setInputs({ ...inputs, catSlug: e.target.value });
 	};
 
 	// Upload image
@@ -159,37 +210,50 @@ const AddPage = () => {
 					/>
 				</div>
 				<div className="w-full flex flex-col gap-2 ">
-					<label className="text-sm">Category</label>
-					<input
-						className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
-						type="text"
-						placeholder="pizzas"
-						name="catSlug"
-						onChange={handleChange}
-					/>
+					<label className="text-sm" htmlFor="category">
+						Category
+					</label>
+
+					<select
+						id="category"
+						className="block w-full p-2 ring-1 ring-red-100 border-red-300 rounded-md relative focus:ring-red-300 focus:border-red-300"
+						onChange={handleChangeCategory}
+					>
+						{categories.length > 0 &&
+							categories?.map((category) => (
+								<option key={category?.id}>{category.slug}</option>
+							))}
+					</select>
 				</div>
 
 				<div className="w-full flex flex-col gap-2">
 					<label className="text-sm">Options</label>
 					<div className="flex flex-col md:flex-row gap-2">
-						<input
-							className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
-							type="text"
-							placeholder="Title"
-							name="title"
-							onChange={changeOption}
-						/>
+						<select
+							id="option"
+							className="block flex-1  p-2 ring-1 ring-red-100 border-red-300 rounded-md relative focus:ring-red-300 focus:border-red-300"
+							onChange={handleSize}
+							value={option.title || ""}
+						>
+							<option value="">Select Size</option>
+							<option>Small</option>
+							<option>Medium</option>
+							<option>Large</option>
+						</select>
 						<input
 							className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
 							type="number"
 							placeholder="Additional Price"
 							name="additionalPrice"
-							onChange={changeOption}
+							value={option.additionalPrice}
+							onChange={handlePrice}
 						/>
+
 						<button
 							type="button"
 							className="bg-gray-500 p-2 text-white"
-							onClick={() => setOptions((prev) => [...prev, option])}
+							onClick={handleOptionClick}
+							disabled={option.title === "" || option.additionalPrice === 0}
 						>
 							Add Option
 						</button>
