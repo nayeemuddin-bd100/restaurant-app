@@ -10,6 +10,7 @@ import getOrders from "../lib/getOrders";
 import updateOrders from "../lib/updateOrder";
 import toast from "react-hot-toast";
 import OrderSkelton from "../components/Skelton/OrderSkelton";
+import deleteOrder from "../lib/deleteOrder";
 
 const OrdersPage = () => {
 	const { data: session, status } = useSession();
@@ -33,6 +34,13 @@ const OrdersPage = () => {
 			queryClient.invalidateQueries({ queryKey: ["orders"] });
 		},
 	});
+	const deleteOrderMutation = useMutation({
+		mutationFn: (id: string) => deleteOrder(id),
+
+		onSuccess() {
+			queryClient.invalidateQueries({ queryKey: ["orders"] });
+		},
+	});
 
 	const handleUpdate = (e: React.FormEvent<HTMLFormElement>, id: string) => {
 		e.preventDefault();
@@ -43,6 +51,11 @@ const OrdersPage = () => {
 
 		updateStatusMutation.mutate({ id, status });
 		toast.success("Status updated successfully");
+	};
+
+	const handleDelete = async (id: string) => {
+		deleteOrderMutation.mutate(id);
+		toast.success("Delete Order successfully");
 	};
 	if (isLoading || status === "loading" || updateStatusMutation.isPending)
 		return <OrderSkelton />;
@@ -117,6 +130,18 @@ const OrdersPage = () => {
 												type="submit"
 											>
 												<Image src="/edit.png" alt="" width={20} height={20} />
+											</button>
+											<button
+												className="bg-red-400 p-2 rounded-full"
+												type="button"
+												onClick={() => handleDelete(item.id)}
+											>
+												<Image
+													src="/delete.png"
+													alt=""
+													width={20}
+													height={20}
+												/>
 											</button>
 										</form>
 									</td>
