@@ -3,19 +3,40 @@ import Image from "next/image";
 import { useCartStore } from "../utils/store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const CartPage = () => {
 	const { products, totalItems, totalPrice, removeFromCart, resetCart } =
 		useCartStore();
 	const router = useRouter();
+	const { data: session } = useSession();
 
 	useEffect(() => {
 		useCartStore.persist.rehydrate();
 	}, []);
 
-	const handleClick = () => {
-		resetCart();
-		router.push("/success");
+	const handleClick = async () => {
+		if (!session) {
+			router.push("/login");
+		} else {
+			const data = {
+				price: totalPrice,
+				status: "Preparing",
+				products,
+			};
+			await fetch("http://localhost:3000/api/orders", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					...data,
+				}),
+			});
+
+			resetCart();
+			router.push("/success");
+		}
 	};
 
 	return (
