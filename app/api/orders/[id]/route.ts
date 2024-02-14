@@ -39,3 +39,41 @@ export const PUT = async (
 		);
 	}
 };
+
+export const DELETE = async (
+	_: any,
+	{ params }: { params: { id: string } }
+) => {
+	const { id } = params;
+	const session = await getAuthSession();
+
+	try {
+		//User Validation
+		if (!id || typeof id !== "string") {
+			return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+		}
+		if (!session || !session?.user.isAdmin) {
+			return NextResponse.json(
+				{ message: "Admin Can Delete Order" },
+				{ status: 401 }
+			);
+		}
+
+		const deleteOrder = await prisma.order.delete({
+			where: {
+				id,
+			},
+		});
+
+		return NextResponse.json(deleteOrder, { status: 200 });
+	} catch (error) {
+		console.log(error);
+
+		return NextResponse.json(
+			{ message: "Something Went wrong" },
+			{
+				status: 500,
+			}
+		);
+	}
+};
