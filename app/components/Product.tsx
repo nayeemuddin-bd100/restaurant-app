@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ProductType } from "../types/types";
 import Image from "next/image";
+import AddToCartButton from "./AddToCartButton";
 
 interface ProductProps {
 	item: ProductType;
@@ -23,10 +24,7 @@ const Product = ({ item }: ProductProps) => {
 			<div className="flex items-center justify-between font-bold w-[80%]">
 				<h1 className="text-2xl uppercase p-2">{item.title}</h1>
 				<h2 className="group-hover:hidden text-xl">${item.price}</h2>
-				<button className="hidden group-hover:block uppercase bg-red-500 text-white p-2 rounded-md">
-					{" "}
-					Add to Cart
-				</button>
+				<AddToCartButton baseThree product={item} total={item?.price} />
 			</div>
 		</Link>
 	);

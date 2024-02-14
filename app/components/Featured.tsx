@@ -1,6 +1,8 @@
 import Image from "next/image";
 import getProducts from "../lib/getProducts";
 import { ProductType } from "../types/types";
+import Link from "next/link";
+import AddToCartButton from "./AddToCartButton";
 
 interface FeaturedProps {
 	params?: { isFeatured: string };
@@ -15,7 +17,8 @@ const Featured = async ({ params }: FeaturedProps) => {
 			<div className="w-max flex">
 				{/* SINGLE ITEM */}
 				{featuredProducts.map((item) => (
-					<div
+					<Link
+						href={`/product/${item.id}`}
 						key={item.id}
 						className="w-screen h-[60vh] flex flex-col items-center justify-around p-4 hover:bg-fuchsia-100 transition-all duration-300 md:w-[50vw] xl:w-[33vw] xl:h-[90vh] group"
 					>
@@ -32,11 +35,9 @@ const Featured = async ({ params }: FeaturedProps) => {
 							</h1>
 							<p className="p-4 2xl:p-8">{item?.desc}</p>
 							<span className="text-xl font-bold">${item?.price}</span>
-							<button className="bg-red-500 text-white p-2 rounded-md">
-								Add to Cart
-							</button>
+							<AddToCartButton baseOne product={item} total={item?.price} />
 						</div>
-					</div>
+					</Link>
 				))}
 			</div>
 		</div>
