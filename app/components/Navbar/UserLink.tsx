@@ -22,7 +22,7 @@ const UserLink = () => {
 					)}
 					{session?.user?.isAdmin && (
 						<div>
-							<Link href="/add-products">Add</Link>
+							<Link href="/add-product">Add</Link>
 						</div>
 					)}
 					<div className="ml-4 cursor-pointer " onClick={handleLogOut}>
