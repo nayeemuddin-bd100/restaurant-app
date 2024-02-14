@@ -131,23 +131,26 @@ const AddPage = () => {
 	// Add new product to db
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (!inputs.title || !inputs.desc || !inputs.price || !inputs.catSlug) {
+			toast.error("Please fill all the fields");
+		} else {
+			try {
+				setLoading(true);
+				const res = await fetch("http://localhost:3000/api/products", {
+					method: "POST",
+					body: JSON.stringify({
+						...inputs,
+						options,
+					}),
+				});
 
-		try {
-			setLoading(true);
-			const res = await fetch("http://localhost:3000/api/products", {
-				method: "POST",
-				body: JSON.stringify({
-					...inputs,
-					options,
-				}),
-			});
-
-			const data = await res.json();
-			router.push(`/product/${data.id}`);
-			setLoading(false);
-			toast.success("Product created successfully");
-		} catch (err) {
-			console.log(err);
+				const data = await res.json();
+				router.push(`/product/${data.id}`);
+				setLoading(false);
+				toast.success("Product created successfully");
+			} catch (err) {
+				console.log(err);
+			}
 		}
 	};
 
