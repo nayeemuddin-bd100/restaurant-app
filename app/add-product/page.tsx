@@ -8,6 +8,7 @@ import AddProductSkelton from "../components/Skelton/AddProductSkelton";
 import { CldUploadButton } from "next-cloudinary";
 import toast from "react-hot-toast";
 import getCategories from "../lib/getCategories";
+import addProduct from "../lib/addProduct";
 
 interface Inputs {
 	title: string;
@@ -136,15 +137,11 @@ const AddPage = () => {
 		} else {
 			try {
 				setLoading(true);
-				const res = await fetch("http://localhost:3000/api/products", {
-					method: "POST",
-					body: JSON.stringify({
-						...inputs,
-						options,
-					}),
-				});
-
-				const data = await res.json();
+				const newProduct = {
+					...inputs,
+					options,
+				};
+				const data = await addProduct(newProduct);
 				router.push(`/product/${data.id}`);
 				setLoading(false);
 				toast.success("Product created successfully");
