@@ -1,6 +1,6 @@
 const updateOrders = async (updateOrders: { id: string; status: string }) => {
 	const res = await fetch(
-		`${process.env.BASE_URL}/api/orders/${updateOrders.id}`,
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/orders/${updateOrders.id}`,
 		{
 			method: "PUT",
 			headers: {
