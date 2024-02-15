@@ -14,17 +14,16 @@ const formSchema = Yup.object({
 const RegisterForm = () => {
 	const formik = useFormik({
 		initialValues: {
+			name: "",
 			email: "",
 			password: "",
-			name: "",
 		},
 		onSubmit: (value) => {
 			console.log(value);
-
-			// dispatch(loginUserAction(value));
 		},
 		validationSchema: formSchema,
 	});
+
 	return (
 		<div>
 			<form onSubmit={formik.handleSubmit} className="w-full mx-auto">
@@ -34,6 +33,7 @@ const RegisterForm = () => {
 						name="name"
 						id="name"
 						className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+						value={formik.values.name}
 						onChange={formik.handleChange("name")}
 						onBlur={formik.handleBlur("name")}
 					/>
@@ -54,6 +54,7 @@ const RegisterForm = () => {
 						name="email"
 						id="email"
 						className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+						value={formik.values.email}
 						onChange={formik.handleChange("email")}
 						onBlur={formik.handleBlur("email")}
 					/>
@@ -74,8 +75,9 @@ const RegisterForm = () => {
 						name="password"
 						id="password"
 						className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-						onChange={formik.handleChange("email")}
-						onBlur={formik.handleBlur("email")}
+						value={formik.values.password}
+						onChange={formik.handleChange("password")}
+						onBlur={formik.handleBlur("password")}
 					/>
 					<label
 						htmlFor="password"
