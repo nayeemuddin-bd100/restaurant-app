@@ -4,19 +4,10 @@ import { getAuthSession } from "@/app/utils/auth";
 
 export const GET = async () => {
 	const session = await getAuthSession();
-	if (session) {
+
+	if (session?.user.isAdmin) {
 		try {
-			if (session.user.isAdmin) {
-				const orders = await prisma?.order.findMany();
-				return NextResponse.json(orders);
-			}
-
-			const orders = await prisma.order.findMany({
-				where: {
-					userEmail: session.user.email!,
-				},
-			});
-
+			const orders = await prisma?.order.findMany();
 			return NextResponse.json(orders);
 		} catch (error) {
 			console.log(error);
