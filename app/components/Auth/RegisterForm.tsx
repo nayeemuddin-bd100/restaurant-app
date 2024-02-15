@@ -1,4 +1,5 @@
 "use client";
+import registerUser from "@/app/lib/registerUser";
 import { useFormik } from "formik";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -27,14 +28,7 @@ const RegisterForm = () => {
 			setIsLoading(true);
 
 			try {
-				const response = await fetch("http://localhost:3000/api/register", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(value),
-				});
-				const data = await response.json();
+				const data = await registerUser(value);
 				if (data.error) {
 					toast.error(data.error);
 				}
