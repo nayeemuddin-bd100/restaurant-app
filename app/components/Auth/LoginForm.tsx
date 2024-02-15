@@ -1,4 +1,8 @@
+"use client";
 import { useFormik } from "formik";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 //form validation using formik
@@ -8,15 +12,26 @@ const formSchema = Yup.object({
 });
 
 const LoginForm = () => {
+	const [isLoading, setIsLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
 			email: "",
 			password: "",
 		},
-		onSubmit: (value) => {
-			console.log(value);
-
-			// dispatch(loginUserAction(value));
+		onSubmit: async (value) => {
+			try {
+				const result = await signIn("credentials", {
+					...value,
+					redirect: false,
+				});
+				if (!result?.ok) {
+					toast.error("Invalid Credentials");
+				} else {
+					toast.success("Login Successfully");
+				}
+			} catch (error) {
+				console.log(error);
+			}
 		},
 		validationSchema: formSchema,
 	});
@@ -65,10 +80,11 @@ const LoginForm = () => {
 				</div>
 
 				<button
+					disabled={isLoading}
 					type="submit"
 					className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-3"
 				>
-					Login
+					{isLoading ? "Loading..." : "Login"}
 				</button>
 			</form>
 		</div>
