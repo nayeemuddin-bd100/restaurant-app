@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CartIcon from "./CartIcon";
+import { signOut, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const links = [
 	{ id: 1, title: "Home", url: "/" },
@@ -13,7 +15,12 @@ const links = [
 
 const Menu = () => {
 	const [open, setOpen] = useState(false);
-	const user = false;
+	const { data: session } = useSession();
+	const handleLogOut = async () => {
+		await signOut();
+		toast.success("Logged out successfully");
+		setOpen(false);
+	};
 	return (
 		<div>
 			<Image
@@ -32,12 +39,32 @@ const Menu = () => {
 						</Link>
 					))}
 
-					<Link
-						href={user ? "/orders" : "login"}
-						onClick={() => setOpen(false)}
-					>
-						{user ? "Orders" : "Login"}
-					</Link>
+					{session?.user?.isAdmin && (
+						<div>
+							<Link onClick={() => setOpen(false)} href="/orders">
+								Orders
+							</Link>
+						</div>
+					)}
+					{session?.user?.isAdmin && (
+						<div>
+							<Link onClick={() => setOpen(false)} href="/add-product">
+								Add Products
+							</Link>
+						</div>
+					)}
+
+					{!session && (
+						<Link href={"/login"} onClick={() => setOpen(false)}>
+							Login
+						</Link>
+					)}
+
+					{session?.user.email && (
+						<button className="uppercase" onClick={handleLogOut}>
+							Logout
+						</button>
+					)}
 					<Link href="/cart" onClick={() => setOpen(false)}>
 						<CartIcon />
 					</Link>
