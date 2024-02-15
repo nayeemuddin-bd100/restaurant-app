@@ -39,9 +39,12 @@ const DeleteButton = ({ id }: { id: string }) => {
 			);
 			return;
 		} else {
-			const res = await fetch(`${process.env.BASE_URL}/api/products/${id}`, {
-				method: "DELETE",
-			});
+			const res = await fetch(
+				`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${id}`,
+				{
+					method: "DELETE",
+				}
+			);
 
 			if (res.status === 200) {
 				router.push("/menu");
