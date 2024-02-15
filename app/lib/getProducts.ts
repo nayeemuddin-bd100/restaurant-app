@@ -4,16 +4,16 @@ const getProducts = async (params: {
 }) => {
 	let url;
 	if (params?.category) {
-		url = `http://localhost:3000/api/products?category=${params.category}`;
+		url = `${process.env.BASE_URL}/api/products?category=${params.category}`;
 	} else if (params?.isFeatured) {
-		url = "http://localhost:3000/api/products?isFeatured=true";
+		url = `${process.env.BASE_URL}/api/products?isFeatured=true`;
 	} else {
-		url = "http://localhost:3000/api/products";
+		url = `${process.env.BASE_URL}/api/products`;
 	}
 	try {
 		const res = await fetch(url, {
 			cache: "force-cache",
-			next: { revalidate: 5 },
+			next: { revalidate: 3 },
 		});
 
 		if (!res.ok) {

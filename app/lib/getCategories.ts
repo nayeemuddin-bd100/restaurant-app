@@ -1,5 +1,5 @@
 const getCategories = async () => {
-	const res = await fetch("http://localhost:3000/api/categories", {
+	const res = await fetch(`${process.env.BASE_URL}/api/categories`, {
 		cache: "force-cache",
 	});
 

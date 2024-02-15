@@ -1,5 +1,5 @@
 const getOrders = async () => {
-	const res = await fetch("http://localhost:3000/api/orders");
+	const res = await fetch(`${process.env.BASE_URL}/api/orders`);
 	return res.json();
 };
 
