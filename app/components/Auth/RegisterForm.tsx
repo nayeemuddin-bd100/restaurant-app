@@ -1,4 +1,7 @@
+"use client";
 import { useFormik } from "formik";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 //form validation using formik
@@ -12,14 +15,39 @@ const formSchema = Yup.object({
 });
 
 const RegisterForm = () => {
+	const [isLoading, setIsLoading] = useState(false);
+
 	const formik = useFormik({
 		initialValues: {
 			name: "",
 			email: "",
 			password: "",
 		},
-		onSubmit: (value) => {
-			console.log(value);
+		onSubmit: async (value) => {
+			setIsLoading(true);
+
+			try {
+				const response = await fetch("http://localhost:3000/api/register", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(value),
+				});
+				const data = await response.json();
+				if (data.error) {
+					toast.error(data.error);
+				}
+
+				if (data?.email) {
+					toast.success("Registered Successfully");
+				}
+			} catch (error: any) {
+				toast.error(error.message);
+				console.log(error);
+			} finally {
+				setIsLoading(false);
+			}
 		},
 		validationSchema: formSchema,
 	});
@@ -92,10 +120,11 @@ const RegisterForm = () => {
 				</div>
 
 				<button
+					disabled={isLoading}
 					type="submit"
 					className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-3"
 				>
-					Register
+					{isLoading ? "Loading..." : "Register"}
 				</button>
 			</form>
 		</div>
