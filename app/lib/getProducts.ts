@@ -4,11 +4,11 @@ const getProducts = async (params: {
 }) => {
 	let url;
 	if (params?.category) {
-		url = `${process.env.BASE_URL}/api/products?category=${params.category}`;
+		url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?category=${params.category}`;
 	} else if (params?.isFeatured) {
-		url = `${process.env.BASE_URL}/api/products?isFeatured=true`;
+		url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?isFeatured=true`;
 	} else {
-		url = `${process.env.BASE_URL}/api/products`;
+		url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`;
 	}
 	try {
 		const res = await fetch(url, {
