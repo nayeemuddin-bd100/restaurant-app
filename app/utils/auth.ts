@@ -2,8 +2,10 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/utils/prismadb";
 import { User } from "next-auth";
+import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
 	interface Session {
@@ -32,6 +34,38 @@ export const authOptions: NextAuthOptions = {
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		}),
+		CredentialsProvider({
+			name: "Credentials",
+			credentials: {
+				email: { label: "Email", type: "text", placeholder: "test@gmail.com" },
+				password: { label: "Password", type: "password" },
+			},
+			async authorize(credentials) {
+				if (!credentials?.email || !credentials?.password) {
+					throw new Error("Invalid credentials");
+				}
+				const user = await prisma.user.findUnique({
+					where: {
+						email: credentials.email,
+					},
+				});
+
+				if (!user || !user?.hashedPassword) {
+					throw new Error("Invalid credentials");
+				}
+
+				const isCorrectPassword = await bcrypt.compare(
+					credentials.password,
+					user.hashedPassword
+				);
+
+				if (!isCorrectPassword) {
+					throw new Error("Invalid credentials");
+				}
+
+				return user;
+			},
 		}),
 	],
 
