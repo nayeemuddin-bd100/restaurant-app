@@ -1,13 +1,11 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import LoginForm from "../components/Auth/LoginForm";
 import LoginSkelton from "../components/Skelton/LoginSkelton";
 import { useState } from "react";
 import RegisterForm from "../components/Auth/RegisterForm";
-import toast from "react-hot-toast";
 
 const GithubIcon = (
 	<svg
@@ -66,7 +64,7 @@ const LoginPage = () => {
 	return (
 		<div className="p-4 flex items-center justify-center h-full">
 			{/* BOX */}
-			<div className="  h-full shadow-2xl rounded-md flex flex-col md:flex-row md:h-[70%] md:w-full lg:w-[60%] 2xl:w-1/2">
+			<div className="  h-full shadow-2xl rounded-md flex flex-col md:flex-row md:h-[70%] md:w-full lg:w-4/5 2xl:w-1/2">
 				{/* IMAGE CONTAINER */}
 
 				<div className="w-full md:w-1/2 relative">
@@ -93,7 +91,7 @@ const LoginPage = () => {
 						</button>
 						<button
 							type="button"
-							className="w-full text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2 justify-center"
+							className="w-full text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 justify-center"
 							onClick={() => handleSocialLogin("github")}
 						>
 							{GithubIcon}
