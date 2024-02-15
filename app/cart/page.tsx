@@ -4,6 +4,7 @@ import { useCartStore } from "../utils/store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import completeOrder from "../lib/completeOrder";
 
 const CartPage = () => {
 	const { products, totalItems, totalPrice, removeFromCart, resetCart } =
@@ -24,16 +25,7 @@ const CartPage = () => {
 				status: "Preparing",
 				products,
 			};
-			await fetch("http://localhost:3000/api/orders", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...data,
-				}),
-			});
-
+			await completeOrder(data);
 			resetCart();
 			router.push("/success");
 		}
