@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -62,7 +61,7 @@ const OrdersPage = () => {
 
 	return (
 		<div className="p-4 lg:px-20 xl:px-40">
-			{data.length > 0 ? (
+			{data?.length > 0 ? (
 				<table className="w-full border-separate border-spacing-3 ">
 					<thead>
 						<tr className="text-left">
@@ -95,14 +94,14 @@ const OrdersPage = () => {
 								<td className="py-6 px-1">
 									{item.createdAt.toString().slice(0, 10)}
 								</td>
-								<td className="py-6 px-1">{item.price}</td>
+								<td className="py-6 px-1 text-center">{item.price}</td>
 								<td className="hidden md:block py-6 px-1">
 									{item.products[0].title}
 								</td>
 								{session?.user.isAdmin ? (
 									<td>
 										<form
-											className="flex items-center justify-center gap-4"
+											className="flex flex-col lg:flex-row items-center justify-center gap-2 px-3"
 											onSubmit={(e) => handleUpdate(e, item.id)}
 										>
 											<select
@@ -125,24 +124,31 @@ const OrdersPage = () => {
 													Cancelled
 												</option>
 											</select>
-											<button
-												className="bg-red-400 p-2 rounded-full"
-												type="submit"
-											>
-												<Image src="/edit.png" alt="" width={20} height={20} />
-											</button>
-											<button
-												className="bg-red-400 p-2 rounded-full"
-												type="button"
-												onClick={() => handleDelete(item.id)}
-											>
-												<Image
-													src="/delete.png"
-													alt=""
-													width={20}
-													height={20}
-												/>
-											</button>
+											<div className="flex gap-2">
+												<button
+													className="bg-red-400 p-2 rounded-full"
+													type="submit"
+												>
+													<Image
+														src="/edit.png"
+														alt=""
+														width={20}
+														height={20}
+													/>
+												</button>
+												<button
+													className="bg-red-400 p-2 rounded-full"
+													type="button"
+													onClick={() => handleDelete(item.id)}
+												>
+													<Image
+														src="/delete.png"
+														alt=""
+														width={20}
+														height={20}
+													/>
+												</button>
+											</div>
 										</form>
 									</td>
 								) : (
@@ -154,7 +160,7 @@ const OrdersPage = () => {
 				</table>
 			) : (
 				<h1 className="text-3xl text-red-500 text-center mt-10 text-bold ">
-					No orders yet
+					No orders Found
 				</h1>
 			)}
 		</div>
