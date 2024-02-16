@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PizzaKing
 
-## Getting Started
+PizzaKing is a role-based restaurant web application that allows users to explore a variety of delicious pizzas, place orders, and provides administrators with the ability to manage products and view orders.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Explore PizzaKing live at [https://pizzaking-restaurant.vercel.app/](https://pizzaking-restaurant.vercel.app/).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Role-Based Access:** Admins can manage products, view orders, and delete products, while users can browse products and place orders.
+- **User-Friendly Interface:** Responsive design for seamless navigation and an enjoyable user experience.
 
-## Learn More
+- **NextAuth Integration:** Secure authentication and authorization based on NextAuth.
 
-To learn more about Next.js, take a look at the following resources:
+- **Prisma Database:** Data persistence and manipulation facilitated through Prisma, a modern database toolkit.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Next.js 14: React framework for building modern web applications.
 
-## Deploy on Vercel
+- Tailwind CSS: Utility-first CSS framework for streamlined styling.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Prisma: Type-safe database access and query building.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- TypeScript: Superset of JavaScript for enhanced code quality and maintainability.
+
+- bcrypt: Library for secure password hashing.
+
+- next-auth: Authentication library for Next.js applications.
+
+- react-hook-form: Efficient library for managing forms in React.
+
+- zustand: Lightweight state management for React.
