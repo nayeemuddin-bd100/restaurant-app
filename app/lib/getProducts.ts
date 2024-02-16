@@ -12,8 +12,7 @@ const getProducts = async (params: {
 	}
 	try {
 		const res = await fetch(url, {
-			cache: "force-cache",
-			next: { revalidate: 3 },
+			cache: "no-store",
 		});
 
 		if (!res.ok) {
