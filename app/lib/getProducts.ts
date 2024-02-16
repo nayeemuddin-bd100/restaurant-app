@@ -12,7 +12,7 @@ const getProducts = async (params: {
 	}
 	try {
 		const res = await fetch(url, {
-			cache: "no-store",
+			cache: "no-cache",
 		});
 
 		if (!res.ok) {
@@ -20,8 +20,9 @@ const getProducts = async (params: {
 		}
 
 		return res.json();
-	} catch (error) {
+	} catch (error: any) {
 		console.log(error);
+		throw new Error(error);
 	}
 };
 
