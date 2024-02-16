@@ -8,7 +8,7 @@ const MenuPage = async () => {
 
 	return (
 		<div className="p-4 lg:px-20 xl:px-40 mt-20 flex flex-col md:flex-row items-center ">
-			{menu.map((category: any) => (
+			{menu?.map((category: any) => (
 				<div
 					key={category.id}
 					className="w-full h-full bg-cover p-8 md:h-1/2 overflow-hidden"

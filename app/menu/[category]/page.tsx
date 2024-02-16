@@ -10,7 +10,7 @@ interface CategoryProps {
 const CategoryPage = async ({ params }: CategoryProps) => {
 	const products: ProductType[] = await getProducts(params);
 
-	if (products.length === 0) {
+	if (products?.length === 0) {
 		return (
 			<h2 className="text-3xl text-red-400 w-screen mt-10 font-semibold text-center mx-auto">
 				Product Not Found
@@ -20,7 +20,7 @@ const CategoryPage = async ({ params }: CategoryProps) => {
 
 	return (
 		<div className="flex flex-row flex-wrap  text-red-500">
-			{products.map((item) => (
+			{products?.map((item) => (
 				<Product key={item.id} item={item} />
 			))}
 		</div>
