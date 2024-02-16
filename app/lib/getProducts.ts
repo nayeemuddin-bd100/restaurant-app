@@ -19,7 +19,7 @@ const getProducts = async (params: {
 			throw new Error("Failed to fetch data");
 		}
 
-		return res.json();
+		return await res.json();
 	} catch (error: any) {
 		console.log(error);
 		throw new Error(error);
