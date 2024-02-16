@@ -8,8 +8,6 @@ Explore PizzaKing live at [https://pizzaking-restaurant.vercel.app/](https://piz
 
 ## Features
 
-## Features
-
 - **Role-Based Access:** Admins can manage products, view orders, and delete products, while users can browse products and place orders.
 - **User-Friendly Interface:** Responsive design for seamless navigation and an enjoyable user experience.
 
