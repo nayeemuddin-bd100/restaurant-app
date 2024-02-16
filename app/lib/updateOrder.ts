@@ -9,7 +9,7 @@ const updateOrders = async (updateOrders: { id: string; status: string }) => {
 			body: JSON.stringify(updateOrders.status),
 		}
 	);
-	return res.json();
+	return await res.json();
 };
 
 export default updateOrders;

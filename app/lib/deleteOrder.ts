@@ -5,7 +5,7 @@ const deleteOrder = async (id: string) => {
 			method: "DELETE",
 		}
 	);
-	return res.json();
+	return await res.json();
 };
 
 export default deleteOrder;

@@ -11,7 +11,7 @@ const getSingleProducts = async (id: string) => {
 			throw new Error("Failed to fetch data");
 		}
 
-		return res.json();
+		return await res.json();
 	} catch (error) {
 		console.log(error);
 	}
