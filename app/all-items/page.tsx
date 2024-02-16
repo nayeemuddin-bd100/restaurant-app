@@ -3,7 +3,7 @@ import getProducts from "../lib/getProducts";
 import { ProductType } from "../types/types";
 
 const AllItemsPage = async () => {
-	const products: ProductType[] = await getProducts({});
+	const products = await getProducts({});
 
 	if (products?.length === 0) {
 		return (
@@ -15,7 +15,7 @@ const AllItemsPage = async () => {
 
 	return (
 		<div className="flex flex-row flex-wrap  text-red-500">
-			{products?.map((item) => (
+			{products?.map((item: ProductType) => (
 				<Product key={item.id} item={item} />
 			))}
 		</div>
